@@ -45,6 +45,7 @@ micromdviewer/
 ## Getting Started
 
 ### Installation
+
 1. **Download**: Clone or download all files to a directory
 2. **Set up local server** (recommended for full functionality):
    ```bash
@@ -52,7 +53,7 @@ micromdviewer/
    ```
 3. **Run local server**:
    ```bash
-   http-server
+   http-server -c-1 -p 8080
    ```
    Then open `http://localhost:8080` in your browser
 4. **Alternative**: Launch `index.html` directly in any modern web browser

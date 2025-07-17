@@ -496,7 +496,9 @@ function highlightSearchResults(pattern) {
 }
 
 function clearHighlights() {
-    const highlights = document.querySelectorAll('.search-highlight, .highlight');
+    // 메인 콘텐츠 영역에서만 하이라이트 제거, 검색 결과 패널 제외
+    const content = document.getElementById('content');
+    const highlights = content.querySelectorAll('.search-highlight, .highlight');
     highlights.forEach(highlight => {
         const parent = highlight.parentNode;
         parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
