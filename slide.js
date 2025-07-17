@@ -82,7 +82,7 @@ function processMathJax() {
             hasStartup: typeof MathJax.startup !== 'undefined'
         });
         
-        // MathJax 3.x with async typeset
+        // Try MathJax 3.x methods first
         if (typeof MathJax.typesetPromise === 'function') {
             console.log('Using MathJax 3.x typesetPromise');
             MathJax.typesetPromise().then(() => {
@@ -91,32 +91,27 @@ function processMathJax() {
                 console.warn('MathJax typesetPromise failed:', err);
             });
         }
-        // MathJax 3.x with sync typeset
         else if (typeof MathJax.typeset === 'function') {
             console.log('Using MathJax 3.x typeset');
             MathJax.typeset();
             console.log('MathJax typeset completed');
         }
-        // MathJax 3.x with startup
-        else if (MathJax.startup && typeof MathJax.startup.document === 'object') {
-            console.log('Using MathJax 3.x startup');
-            MathJax.startup.document.render();
-            console.log('MathJax startup render completed');
-        }
-        // MathJax 2.x
-        else if (MathJax.Hub && typeof MathJax.Hub.Queue === 'function') {
-            console.log('Using MathJax 2.x Hub.Queue');
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
-            console.log('MathJax Hub.Queue completed');
-        }
-        // Last resort - try to trigger any available render method
-        else if (typeof MathJax.renderMath === 'function') {
-            console.log('Using MathJax renderMath fallback');
-            MathJax.renderMath();
-        }
+        // Try to manually trigger rendering for current MathJax version
         else {
-            console.warn('No compatible MathJax rendering method found');
-            console.warn('Available MathJax methods:', Object.keys(MathJax));
+            console.log('Attempting manual MathJax rendering');
+            // Wait a bit for MathJax to fully load, then try again
+            setTimeout(() => {
+                if (typeof MathJax.typesetPromise === 'function') {
+                    console.log('Retrying with typesetPromise');
+                    MathJax.typesetPromise();
+                } else if (typeof MathJax.typeset === 'function') {
+                    console.log('Retrying with typeset');
+                    MathJax.typeset();
+                } else {
+                    console.warn('No compatible MathJax rendering method found');
+                    console.warn('Available MathJax methods:', Object.keys(MathJax));
+                }
+            }, 500);
         }
     } catch (error) {
         console.warn('MathJax processing failed:', error);
@@ -131,6 +126,7 @@ function waitForMathJax(callback, maxWait = 5000) {
     const checkMathJax = () => {
         if (typeof MathJax !== 'undefined') {
             console.log('MathJax is now available');
+            // Since MathJax 3.x might not have startup, proceed immediately
             callback();
         } else if (Date.now() - startTime < maxWait) {
             setTimeout(checkMathJax, 100);
