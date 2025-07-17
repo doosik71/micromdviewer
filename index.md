@@ -45,6 +45,7 @@ micromdviewer/
 ## Getting Started
 
 ### Installation
+
 1. **Download**: Clone or download all files to a directory
 2. **Set up local server** (recommended for full functionality):
    ```bash

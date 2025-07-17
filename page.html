@@ -13,40 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.0.0/dist/mermaid.min.js" 
             onerror="console.warn('Failed to load Mermaid from CDN')"
             onload="console.log('Mermaid loaded from CDN')"></script>
-    <script>
-        // Initialize Mermaid when it loads
-        window.mermaidReady = false;
-        
-        // More robust mermaid loading check
-        function checkMermaidLoaded() {
-            if (typeof mermaid !== 'undefined') {
-                console.log('Mermaid is available');
-                window.mermaidReady = true;
-                return true;
-            }
-            return false;
-        }
-        
-        // Initial check
-        if (!checkMermaidLoaded()) {
-            // Poll for mermaid availability
-            let attempts = 0;
-            const maxAttempts = 100;
-            
-            const pollMermaid = () => {
-                attempts++;
-                if (checkMermaidLoaded()) {
-                    console.log('Mermaid loaded after', attempts, 'attempts');
-                } else if (attempts < maxAttempts) {
-                    setTimeout(pollMermaid, 100);
-                } else {
-                    console.warn('Mermaid failed to load after', maxAttempts, 'attempts');
-                }
-            };
-            
-            pollMermaid();
-        }
-    </script>
 </head>
 <body>
     <div class="toc-container" id="toc-container">

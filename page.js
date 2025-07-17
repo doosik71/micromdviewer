@@ -3,9 +3,11 @@ let currentFile = 'index.md';
 let markdownContent = '';
 let searchResults = [];
 let currentSearchIndex = 0;
+let mermaidInitialized = false;
 
 // Mermaid helper functions
 function initializeMermaid() {
+    if (mermaidInitialized) return;
     if (typeof mermaid !== 'undefined') {
         try {
             console.log('Initializing Mermaid...');
@@ -14,6 +16,7 @@ function initializeMermaid() {
                 theme: currentTheme === 'dark' ? 'dark' : 'default',
                 securityLevel: 'loose'
             });
+            mermaidInitialized = true;
             console.log('Mermaid initialized successfully');
         } catch (error) {
             console.warn('Mermaid initialization failed:', error);
@@ -51,6 +54,7 @@ function waitForMermaid(callback, maxWait = 5000) {
     const checkMermaid = () => {
         if (typeof mermaid !== 'undefined') {
             console.log('Mermaid is now available');
+            initializeMermaid();
             callback();
         } else if (Date.now() - startTime < maxWait) {
             setTimeout(checkMermaid, 100);
@@ -148,9 +152,6 @@ function init() {
     
     applyTheme(currentTheme);
     loadMarkdownFile();
-    
-    // Initialize Mermaid if available
-    initializeMermaid();
 }
 
 function applyTheme(theme) {
