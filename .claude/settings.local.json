@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(type:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(hexdump:*)"
+    ],
+    "deny": []
+  }
+}

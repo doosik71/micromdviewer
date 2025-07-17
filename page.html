@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slide Viewer</title>
-    <link rel="stylesheet" href="slide.css">
+    <title>Page Viewer</title>
+    <link rel="stylesheet" href="page.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
@@ -49,39 +49,18 @@
     </script>
 </head>
 <body>
-    <div class="slide-container">
-        <div class="slide-content" id="slide-content">
-            <div class="loading">Loading markdown file...</div>
+    <div class="toc-container" id="toc-container">
+        <div class="toc-header">
+            <h3>Table of Contents</h3>
+            <button class="toc-toggle" onclick="toggleToc()">×</button>
         </div>
+        <div class="toc-content" id="toc-content"></div>
     </div>
 
-    <div class="slide-navigation">
-        <button class="nav-btn" id="prev-btn" onclick="previousSlide()" title="Previous Slide">&lt;</button>
-        <div class="slide-counter">
-            <span id="current-slide">1</span> / <span id="total-slides">1</span>
-        </div>
-        <button class="nav-btn" id="next-btn" onclick="nextSlide()" title="Next Slide">&gt;</button>
-    </div>
-
-    <div class="slide-controls">
-        <button class="control-btn" onclick="toggleOverview()" title="Overview">📋</button>
-        <button class="control-btn" onclick="toggleSearch()" title="Search">🔍</button>
-        <button class="control-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
-        <button class="control-btn" onclick="resetSlides()" title="Go to First">🏠</button>
-    </div>
-
-    <div class="slide-overview" id="slide-overview">
-        <div class="overview-header">
-            <h3>Slide Overview</h3>
-            <button class="close-btn" onclick="toggleOverview()">×</button>
-        </div>
-        <div class="overview-content" id="overview-content"></div>
-    </div>
-
-    <div class="slide-search" id="slide-search">
+    <div class="search-container" id="search-container">
         <div class="search-header">
-            <h3>Slide Search</h3>
-            <button class="close-btn" onclick="toggleSearch()">×</button>
+            <h3>Search</h3>
+            <button class="search-toggle" onclick="toggleSearch()">×</button>
         </div>
         <div class="search-controls">
             <input type="text" id="search-input" placeholder="Enter search term..." oninput="performSearch()">
@@ -93,8 +72,17 @@
         <div class="search-results" id="search-results"></div>
     </div>
 
-    <div class="slide-progress">
-        <div class="progress-bar" id="progress-bar"></div>
+    <div class="main-content">
+        <div class="toolbar">
+            <button class="tool-btn" onclick="toggleToc()" title="Toggle TOC">📋</button>
+            <button class="tool-btn" onclick="toggleSearch()" title="Toggle Search">🔍</button>
+            <button class="tool-btn" onclick="scrollToTop()" title="Scroll to Top">⬆️</button>
+            <button class="tool-btn" onclick="printPage()" title="Print">🖨️</button>
+        </div>
+
+        <div class="content" id="content">
+            <div class="loading">Loading markdown file...</div>
+        </div>
     </div>
 
     <script>
@@ -105,6 +93,6 @@
             }
         };
     </script>
-    <script src="slide.js"></script>
+    <script src="page.js"></script>
 </body>
 </html>
