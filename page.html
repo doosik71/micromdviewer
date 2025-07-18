@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Viewer</title>
+    <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="page.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
@@ -19,14 +21,21 @@
             },
             options: {
                 skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            startup: {
+                ready: () => {
+                    console.log('MathJax is ready!');
+                    MathJax.startup.defaultReady();
+                }
             }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" 
-            onerror="console.warn('Failed to load Mermaid from CDN')"
-            onload="console.log('Mermaid loaded from CDN')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"
+        onerror="console.warn('Failed to load Mermaid from CDN')"
+        onload="console.log('Mermaid loaded from CDN')"></script>
 </head>
+
 <body>
     <div class="toc-container" id="toc-container">
         <div class="toc-header">
@@ -64,14 +73,8 @@
         </div>
     </div>
 
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            }
-        };
-    </script>
+    <script src="common.js"></script>
     <script src="page.js"></script>
 </body>
+
 </html>

@@ -28,7 +28,7 @@ A lightweight, client-side markdown viewer built with pure HTML, CSS, and JavaSc
 
 ## File Structure
 
-```
+```text
 micromdviewer/
 ├── index.html      # Main entry point with theme/mode selector
 ├── page.html       # Webpage-style markdown viewer
@@ -46,23 +46,28 @@ micromdviewer/
 
 ### Installation
 
-1. **Download**: Clone or download all files to a directory
-2. **Set up local server** (recommended for full functionality):
-   ```bash
-   npm install -g http-server
-   ```
-3. **Run local server**:
-   ```bash
-   http-server -c-1 -p 8080
-   ```
-   Then open `http://localhost:8080` in your browser
-4. **Alternative**: Launch `index.html` directly in any modern web browser
+- **Download**: Clone or download all files to a directory
+- **Set up local server** (recommended for full functionality):
+
+```bash
+npm install -g http-server
+```
+
+- **Run local server**:
+
+```bash
+http-server -c-1 -p 8080
+```
+
+Then open `http://localhost:8080` in your browser
+
+- **Alternative**: Launch `index.html` directly in any modern web browser
 
 ### Usage
 
 #### Basic Usage
 
-```
+```text
 # Open the default document
 open index.html
 
@@ -157,6 +162,13 @@ $$
 $$
 ```
 
+Inline math: $E = mc^2$
+
+Block math:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+
 ### Diagram Support
 
 ````markdown
@@ -168,6 +180,13 @@ graph TD
 ```
 ````
 
+```mermaid
+graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+```
+
 ## Browser Compatibility
 
 - ✅ Chrome/Chromium 80+
@@ -178,7 +197,9 @@ graph TD
 ## Development
 
 ### Project Structure
+
 The application follows a modular architecture:
+
 - **Entry Point**: `index.html` provides the main interface
 - **Viewers**: Separate HTML/CSS/JS for each view mode
 - **Shared Libraries**: Common dependencies (marked, highlight.js, MathJax, Mermaid)
@@ -218,28 +239,30 @@ This project is open source. Feel free to use, modify, and distribute.
 
 ### Common Issues
 
-**Files not loading**
+#### Files not loading
 
 - **Recommended solution**: Use a local server with `http-server`
-  ```bash
-  npm install -g http-server
-  http-server
-  ```
+
+```bash
+npm install -g http-server
+http-server
+```
+
 - Ensure files are in the same directory as `index.html`
 - Check file permissions
 - Try different browsers
 
-**Math not rendering**
+#### Math not rendering
 
 - Check internet connection (MathJax loads from CDN)
 - Verify LaTeX syntax
 
-**Search not working**
+#### Search not working
 
 - Clear browser cache
 - Check console for JavaScript errors
 
-**Themes not applying**
+#### Themes not applying
 
 - Refresh the page
 - Check browser developer tools for CSS errors

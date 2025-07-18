@@ -1,0 +1,27 @@
+{
+  "name": "micromdviewer",
+  "version": "1.0.0",
+  "description": "A lightweight, client-side markdown viewer built with pure HTML, CSS, and JavaScript.",
+  "keywords": [
+    "Markdown",
+    "Viewer"
+  ],
+  "homepage": "https://github.com/doosik71/micromdviewer#readme",
+  "bugs": {
+    "url": "https://github.com/doosik71/micromdviewer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doosik71/micromdviewer.git"
+  },
+  "license": "ISC",
+  "author": "Doosik Kim",
+  "type": "commonjs",
+  "main": "http-server",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

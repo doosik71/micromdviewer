@@ -6,154 +6,14 @@ let currentSlide = 0;
 let searchResults = [];
 let isFullscreen = false;
 
-// Mermaid helper functions
-function initializeMermaid() {
-    if (typeof mermaid !== 'undefined') {
-        try {
-            console.log('Initializing Mermaid...');
-            mermaid.initialize({
-                startOnLoad: false,
-                theme: currentTheme === 'dark' ? 'dark' : 'default',
-                securityLevel: 'loose'
-            });
-            console.log('Mermaid initialized successfully');
-        } catch (error) {
-            console.warn('Mermaid initialization failed:', error);
-        }
-    } else {
-        console.warn('Mermaid is not available for initialization');
-    }
-}
-
-function runMermaid() {
-    if (typeof mermaid !== 'undefined') {
-        try {
-            console.log('Running Mermaid rendering...');
-            // Use a timeout to ensure DOM is ready
-            setTimeout(() => {
-                if (typeof mermaid !== 'undefined') {
-                    mermaid.run();
-                    console.log('Mermaid rendering completed');
-                } else {
-                    console.warn('Mermaid became undefined during timeout');
-                }
-            }, 200);
-        } catch (error) {
-            console.warn('Mermaid rendering failed:', error);
-        }
-    } else {
-        console.warn('Mermaid is not available for rendering');
-    }
-}
-
-// Wait for mermaid specifically
-function waitForMermaid(callback, maxWait = 5000) {
-    const startTime = Date.now();
-    
-    const checkMermaid = () => {
-        if (typeof mermaid !== 'undefined') {
-            console.log('Mermaid is now available');
-            callback();
-        } else if (Date.now() - startTime < maxWait) {
-            setTimeout(checkMermaid, 100);
-        } else {
-            console.warn('Mermaid failed to load within', maxWait, 'ms');
-            callback(); // Continue anyway
-        }
-    };
-    
-    checkMermaid();
-}
-
-// Enhanced MathJax processing with better version detection
-function processMathJax() {
-    if (typeof MathJax === 'undefined') {
-        console.warn('MathJax is not available');
-        return;
-    }
-    
-    try {
-        console.log('Processing MathJax...');
-        console.log('MathJax version info:', {
-            version: MathJax.version || 'unknown',
-            hasTypesetPromise: typeof MathJax.typesetPromise === 'function',
-            hasTypeset: typeof MathJax.typeset === 'function',
-            hasHub: typeof MathJax.Hub !== 'undefined',
-            hasStartup: typeof MathJax.startup !== 'undefined'
-        });
-        
-        // Try MathJax 3.x methods first
-        if (typeof MathJax.typesetPromise === 'function') {
-            console.log('Using MathJax 3.x typesetPromise');
-            MathJax.typesetPromise().then(() => {
-                console.log('MathJax typesetPromise completed');
-            }).catch(err => {
-                console.warn('MathJax typesetPromise failed:', err);
-            });
-        }
-        else if (typeof MathJax.typeset === 'function') {
-            console.log('Using MathJax 3.x typeset');
-            MathJax.typeset();
-            console.log('MathJax typeset completed');
-        }
-        // Try to manually trigger rendering for current MathJax version
-        else {
-            console.log('Attempting manual MathJax rendering');
-            // Wait a bit for MathJax to fully load, then try again
-            setTimeout(() => {
-                if (typeof MathJax.typesetPromise === 'function') {
-                    console.log('Retrying with typesetPromise');
-                    MathJax.typesetPromise();
-                } else if (typeof MathJax.typeset === 'function') {
-                    console.log('Retrying with typeset');
-                    MathJax.typeset();
-                } else {
-                    console.warn('No compatible MathJax rendering method found');
-                    console.warn('Available MathJax methods:', Object.keys(MathJax));
-                }
-            }, 500);
-        }
-    } catch (error) {
-        console.warn('MathJax processing failed:', error);
-        console.warn('MathJax object:', MathJax);
-    }
-}
-
-// Wait for MathJax specifically
-function waitForMathJax(callback, maxWait = 5000) {
-    const startTime = Date.now();
-    
-    const checkMathJax = () => {
-        if (typeof MathJax !== 'undefined') {
-            console.log('MathJax is now available');
-            // Since MathJax 3.x might not have startup, proceed immediately
-            callback();
-        } else if (Date.now() - startTime < maxWait) {
-            setTimeout(checkMathJax, 100);
-        } else {
-            console.warn('MathJax failed to load within', maxWait, 'ms');
-            callback(); // Continue anyway
-        }
-    };
-    
-    checkMathJax();
-}
-
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
     currentFile = urlParams.get('file') || 'index.md';
     currentTheme = urlParams.get('theme') || 'light';
-    
+
     applyTheme(currentTheme);
     loadMarkdownFile();
     setupKeyboardNavigation();
-    
-    // Initialize Mermaid if available
-    initializeMermaid();
-}
-
-function applyTheme(theme) {
-    document.body.className = `theme-${theme}`;
 }
 
 async function loadMarkdownFile() {
@@ -162,7 +22,7 @@ async function loadMarkdownFile() {
         if (!response.ok) {
             throw new Error(`File not found: ${currentFile}`);
         }
-        
+
         markdownContent = await response.text();
         parseSlides();
         renderCurrentSlide();
@@ -170,68 +30,27 @@ async function loadMarkdownFile() {
         generateOverview();
     } catch (error) {
         console.error('Failed to load markdown file:', error);
-        
-        // Provide helpful error messages and fallback content
         const errorContent = `
             <div class="error">
                 <h2>File Loading Error</h2>
                 <p><strong>Error:</strong> ${error.message}</p>
-                
-                <h3>Possible Solutions:</h3>
-                <ul>
-                    <li><strong>Use a local server:</strong> Run <code>python -m http.server 8000</code> and visit <code>http://localhost:8000</code></li>
-                    <li><strong>Check file path:</strong> Ensure the markdown file exists in the correct location</li>
-                    <li><strong>Try a different browser:</strong> Some browsers have stricter security policies</li>
-                </ul>
-                
-                <h3>Sample Slide Content:</h3>
             </div>
         `;
-        
-        // Add some sample content
-        const sampleMarkdown = `# Welcome to Slide Mode
-
-This is **sample slide content**!
-
-## Slide Features
-- Slide-by-slide navigation
-- Keyboard shortcuts
-- Fullscreen support
-
-### Navigation
-- Use arrow keys to navigate
-- Press F for fullscreen
-- Press Ctrl+O for overview`;
-        
         document.getElementById('slide-content').innerHTML = errorContent;
-        
-        // Try to render sample content
-        if (typeof marked !== 'undefined') {
-            markdownContent = sampleMarkdown;
-            slides = [{
-                title: 'Sample Slide',
-                content: sampleMarkdown,
-                rawContent: sampleMarkdown
-            }];
-            renderCurrentSlide();
-        }
-        
-        updateNavigation();
-        generateOverview();
     }
 }
 
 function parseSlides() {
     const sections = markdownContent.split(/^#{1,2}\s+/m);
     slides = [];
-    
+
     if (sections.length > 1) {
         for (let i = 1; i < sections.length; i++) {
             const content = sections[i].trim();
             const lines = content.split('\n');
             const title = lines[0].replace(/#+\s*/, '');
             const body = lines.slice(1).join('\n').trim();
-            
+
             slides.push({
                 title: title,
                 content: `# ${title}\n\n${body}`,
@@ -245,7 +64,7 @@ function parseSlides() {
             rawContent: markdownContent
         });
     }
-    
+
     if (slides.length === 0) {
         slides.push({
             title: 'Empty Document',
@@ -258,8 +77,7 @@ function parseSlides() {
 function renderCurrentSlide() {
     const slide = slides[currentSlide];
     if (!slide) return;
-    
-    // Check if marked is available
+
     if (typeof marked === 'undefined') {
         document.getElementById('slide-content').innerHTML = `
             <div class="error">
@@ -269,33 +87,8 @@ function renderCurrentSlide() {
         `;
         return;
     }
-    
-    const renderer = new marked.Renderer();
-    
-    renderer.code = function(code, language) {
-        if (language === 'mermaid') {
-            return `<div class="mermaid">${code}</div>`;
-        }
-        
-        let highlighted;
-        if (typeof hljs !== 'undefined') {
-            highlighted = language ? 
-                hljs.highlight(code, { language }).value : 
-                hljs.highlightAuto(code).value;
-        } else {
-            highlighted = code; // Fallback to plain text
-        }
-        
-        return `<pre><code class="hljs ${language || ''}">${highlighted}</code></pre>`;
-    };
-    
-    renderer.heading = function(text, level) {
-        const id = text.toLowerCase()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/\s+/g, '-');
-        return `<h${level} id="${id}">${text}</h${level}>`;
-    };
-    
+
+    const renderer = createMarkedRenderer();
     marked.setOptions({
         renderer: renderer,
         gfm: true,
@@ -305,27 +98,28 @@ function renderCurrentSlide() {
         smartLists: true,
         smartypants: false
     });
-    
+
     const html = marked.parse(slide.content);
     document.getElementById('slide-content').innerHTML = html;
-    
-    // Process MathJax if available
-    processMathJax();
-    
-    // Run Mermaid if available
+
+    waitForMathJax(() => {
+        processMathJax();
+    });
+
     waitForMermaid(() => {
         runMermaid();
     });
+
     updateProgress();
 }
 
 function updateNavigation() {
     document.getElementById('current-slide').textContent = currentSlide + 1;
     document.getElementById('total-slides').textContent = slides.length;
-    
+
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
-    
+
     prevBtn.disabled = currentSlide === 0;
     nextBtn.disabled = currentSlide === slides.length - 1;
 }
@@ -372,11 +166,11 @@ function resetSlides() {
 function generateOverview() {
     const overviewContent = document.getElementById('overview-content');
     let overviewHTML = '';
-    
+
     slides.forEach((slide, index) => {
         const isActive = index === currentSlide ? 'active' : '';
         const preview = slide.rawContent.substring(0, 100) + '...';
-        
+
         overviewHTML += `
             <div class="overview-slide ${isActive}" onclick="goToSlide(${index})">
                 <h3>${slide.title}</h3>
@@ -384,7 +178,7 @@ function generateOverview() {
             </div>
         `;
     });
-    
+
     overviewContent.innerHTML = overviewHTML;
 }
 
@@ -398,7 +192,7 @@ function updateOverviewHighlight() {
 function toggleOverview() {
     const overview = document.getElementById('slide-overview');
     overview.classList.toggle('active');
-    
+
     if (overview.classList.contains('active')) {
         generateOverview();
     }
@@ -407,7 +201,7 @@ function toggleOverview() {
 function toggleSearch() {
     const search = document.getElementById('slide-search');
     search.classList.toggle('active');
-    
+
     if (search.classList.contains('active')) {
         document.getElementById('search-input').focus();
     }
@@ -417,32 +211,32 @@ function performSearch() {
     const searchTerm = document.getElementById('search-input').value.trim();
     const caseSensitive = document.getElementById('case-sensitive').checked;
     const useRegex = document.getElementById('regex-search').checked;
-    
+
     if (!searchTerm) {
         clearSearchResults();
         return;
     }
-    
+
     try {
         searchResults = [];
-        
+
         let searchPattern;
         if (useRegex) {
             searchPattern = new RegExp(searchTerm, caseSensitive ? 'g' : 'gi');
         } else {
-            const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\\]/g, '\\$&');
             searchPattern = new RegExp(escapedTerm, caseSensitive ? 'g' : 'gi');
         }
-        
+
         slides.forEach((slide, slideIndex) => {
             const matches = [...slide.rawContent.matchAll(searchPattern)];
-            
+
             matches.forEach(match => {
                 const startIndex = match.index;
                 const contextStart = Math.max(0, startIndex - 50);
                 const contextEnd = Math.min(slide.rawContent.length, startIndex + match[0].length + 50);
                 const context = slide.rawContent.substring(contextStart, contextEnd);
-                
+
                 searchResults.push({
                     slideIndex: slideIndex,
                     slideTitle: slide.title,
@@ -452,7 +246,7 @@ function performSearch() {
                 });
             });
         });
-        
+
         displaySearchResults();
     } catch (error) {
         document.getElementById('search-results').innerHTML = `
@@ -463,20 +257,20 @@ function performSearch() {
 
 function displaySearchResults() {
     const resultsContainer = document.getElementById('search-results');
-    
+
     if (searchResults.length === 0) {
         resultsContainer.innerHTML = '<div class="no-results">No search results found.</div>';
         return;
     }
-    
+
     let resultsHTML = `<div class="search-summary">Found ${searchResults.length} result(s).</div>`;
-    
+
     searchResults.forEach((result, index) => {
         const highlightedContext = result.context.replace(
-            new RegExp(result.match.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'),
+            new RegExp(result.match.replace(/[.*+?^${}()|[\\]/g, '\\$&'), 'gi'),
             `<span class="search-highlight">${result.match}</span>`
         );
-        
+
         resultsHTML += `
             <div class="search-result" onclick="jumpToSearchResult(${index})">
                 <div class="search-result-slide">Slide ${result.slideIndex + 1}: ${result.slideTitle}</div>
@@ -486,7 +280,7 @@ function displaySearchResults() {
             </div>
         `;
     });
-    
+
     resultsContainer.innerHTML = resultsHTML;
 }
 
@@ -526,8 +320,8 @@ function toggleFullscreen() {
 }
 
 function setupKeyboardNavigation() {
-    document.addEventListener('keydown', function(e) {
-        switch(e.key) {
+    document.addEventListener('keydown', function (e) {
+        switch (e.key) {
             case 'ArrowRight':
             case ' ':
                 e.preventDefault();
@@ -570,50 +364,14 @@ function setupKeyboardNavigation() {
     });
 }
 
-document.addEventListener('fullscreenchange', function() {
+document.addEventListener('fullscreenchange', function () {
     isFullscreen = !!document.fullscreenElement;
     document.body.classList.toggle('fullscreen', isFullscreen);
 });
 
-document.addEventListener('webkitfullscreenchange', function() {
+document.addEventListener('webkitfullscreenchange', function () {
     isFullscreen = !!document.webkitFullscreenElement;
     document.body.classList.toggle('fullscreen', isFullscreen);
 });
 
-// Wait for all libraries to load before initializing
-function waitForLibraries() {
-    let attempts = 0;
-    const maxAttempts = 100; // 10 seconds max
-    
-    const checkLibraries = () => {
-        attempts++;
-        
-        // Check if essential libraries are loaded
-        const markedReady = typeof marked !== 'undefined';
-        const hlReady = typeof hljs !== 'undefined';
-        const mermaidReady = typeof mermaid !== 'undefined';
-        const mathJaxReady = typeof MathJax !== 'undefined';
-        
-        console.log(`Library check attempt ${attempts}:`, {
-            marked: markedReady,
-            hljs: hlReady,
-            mermaid: mermaidReady,
-            mathJax: mathJaxReady
-        });
-        
-        if (markedReady && hlReady) {
-            console.log('Essential libraries loaded, initializing...');
-            init();
-        } else if (attempts < maxAttempts) {
-            setTimeout(checkLibraries, 100);
-        } else {
-            console.warn('Some libraries failed to load after', maxAttempts * 100, 'ms');
-            console.warn('Initializing with available libraries');
-            init();
-        }
-    };
-    
-    checkLibraries();
-}
-
-window.addEventListener('load', waitForLibraries);
+window.addEventListener('load', () => waitForLibraries(init));
