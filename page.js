@@ -1,4 +1,4 @@
-let currentTheme = 'light';
+let currentTheme = localStorage.getItem('currentTheme') || 'light';
 let currentFile = 'index.md';
 let markdownContent = '';
 let searchResults = [];
@@ -7,10 +7,28 @@ let currentSearchIndex = 0;
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
     currentFile = urlParams.get('file') || 'index.md';
-    currentTheme = urlParams.get('theme') || 'light';
 
     applyTheme(currentTheme);
     loadMarkdownFile();
+
+    // Set initial active theme button
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+    const activeThemeBtn = document.querySelector(`[data-theme="${currentTheme}"]`);
+    if (activeThemeBtn) {
+        activeThemeBtn.classList.add('active');
+    }
+}
+
+function changeTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem('currentTheme', currentTheme); // Save to localStorage
+    applyTheme(currentTheme);
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+}
+
+function switchToSlideView() {
+    window.location.href = `slide.html?file=${encodeURIComponent(currentFile)}`;
 }
 
 async function loadMarkdownFile() {
@@ -68,6 +86,32 @@ function renderMarkdown() {
     });
 
     generateTOC();
+
+    // Intercept clicks on links within the iframe to navigate the parent window
+    document.getElementById('content').addEventListener('click', function(e) {
+        if (e.target.tagName === 'A' && e.target.href) {
+            e.preventDefault();
+            const clickedUrl = new URL(e.target.href);
+            const currentOrigin = window.location.origin;
+
+            if (clickedUrl.origin === currentOrigin) {
+                let filename = '';
+                if (clickedUrl.searchParams.has('file')) {
+                    filename = clickedUrl.searchParams.get('file');
+                } else {
+                    const pathname = clickedUrl.pathname;
+                    const lastSlashIndex = pathname.lastIndexOf('/');
+                    filename = pathname.substring(lastSlashIndex + 1);
+                }
+
+                if (filename.endsWith('.md')) {
+                    window.parent.location.href = `${currentOrigin}/?file=${encodeURIComponent(filename)}`;
+                    return;
+                }
+            }
+            window.open(e.target.href, '_blank');
+        }
+    });
 }
 
 function generateTOC() {

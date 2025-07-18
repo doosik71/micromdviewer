@@ -66,6 +66,14 @@
             <button class="tool-btn" onclick="toggleSearch()" title="Toggle Search">🔍</button>
             <button class="tool-btn" onclick="scrollToTop()" title="Scroll to Top">⬆️</button>
             <button class="tool-btn" onclick="printPage()" title="Print">🖨️</button>
+            <button class="tool-btn" onclick="switchToSlideView()" title="Switch to Slide View">▶️</button>
+            <div class="themes">
+                <div class="theme-btn theme-light active" data-theme="light" onclick="changeTheme('light')"></div>
+                <div class="theme-btn theme-dark" data-theme="dark" onclick="changeTheme('dark')"></div>
+                <div class="theme-btn theme-blue" data-theme="blue" onclick="changeTheme('blue')"></div>
+                <div class="theme-btn theme-green" data-theme="green" onclick="changeTheme('green')"></div>
+                <div class="theme-btn theme-purple" data-theme="purple" onclick="changeTheme('purple')"></div>
+            </div>
         </div>
 
         <div class="content" id="content">

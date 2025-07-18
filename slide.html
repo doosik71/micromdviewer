@@ -56,6 +56,14 @@
         <button class="control-btn" onclick="toggleSearch()" title="Search">🔍</button>
         <button class="control-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
         <button class="control-btn" onclick="resetSlides()" title="Go to First">🏠</button>
+        <button class="control-btn" onclick="switchToPageView()" title="Switch to Page View">📄</button>
+        <div class="themes">
+            <div class="theme-btn theme-light active" data-theme="light" onclick="changeTheme('light')"></div>
+            <div class="theme-btn theme-dark" data-theme="dark" onclick="changeTheme('dark')"></div>
+            <div class="theme-btn theme-blue" data-theme="blue" onclick="changeTheme('blue')"></div>
+            <div class="theme-btn theme-green" data-theme="green" onclick="changeTheme('green')"></div>
+            <div class="theme-btn theme-purple" data-theme="purple" onclick="changeTheme('purple')"></div>
+        </div>
     </div>
 
     <div class="slide-overview" id="slide-overview">

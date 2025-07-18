@@ -172,40 +172,53 @@ body.theme-dark .slide-content {
 /* Slide navigation */
 .slide-navigation {
     position: fixed;
-    bottom: 10px; /* Reduced distance from bottom */
+    bottom: 10px;
+    /* Reduced distance from bottom */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Reduced gap */
-    background-color: rgba(0, 0, 0, 0.5); /* Made semi-transparent */
-    padding: 0.5rem 1rem; /* Reduced padding */
-    border-radius: 25px; /* Smaller border-radius */
+    gap: 0.5rem;
+    /* Reduced gap */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Made semi-transparent */
+    padding: 0.5rem 1rem;
+    /* Reduced padding */
+    border-radius: 25px;
+    /* Smaller border-radius */
     z-index: 1000;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.3s ease-in-out; /* Smooth transition */
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.3s ease-in-out;
+    /* Smooth transition */
 }
 
 .slide-navigation:hover {
-    opacity: 1; /* Show on hover */
-    pointer-events: auto; /* Clickable on hover */
+    opacity: 1;
+    /* Show on hover */
+    pointer-events: auto;
+    /* Clickable on hover */
 }
 
 .nav-btn {
     background-color: #3498db;
     color: white;
     border: none;
-    padding: 0.4rem 0.8rem; /* Reduced padding */
-    border-radius: 20px; /* Smaller border-radius */
+    padding: 0.4rem 0.8rem;
+    /* Reduced padding */
+    border-radius: 20px;
+    /* Smaller border-radius */
     cursor: pointer;
-    font-size: 0.9rem; /* Reduced font size */
+    font-size: 0.9rem;
+    /* Reduced font size */
     font-weight: bold;
     transition: all 0.3s;
 }
 
 .nav-btn:hover {
     background-color: #2980b9;
-    transform: scale(1.05); /* Slightly smaller scale on hover */
+    transform: scale(1.05);
+    /* Slightly smaller scale on hover */
 }
 
 .nav-btn:disabled {
@@ -216,9 +229,11 @@ body.theme-dark .slide-content {
 
 .slide-counter {
     color: white;
-    font-size: 0.9rem; /* Reduced font size */
+    font-size: 0.9rem;
+    /* Reduced font size */
     font-weight: bold;
-    min-width: 60px; /* Reduced min-width */
+    min-width: 60px;
+    /* Reduced min-width */
     text-align: center;
 }
 
@@ -228,7 +243,8 @@ body.theme-dark .slide-content {
     top: 20px;
     right: 20px;
     display: flex;
-    flex-direction: column; /* Added for vertical alignment */
+    flex-direction: column;
+    /* Added for vertical alignment */
     gap: 0.5rem;
     z-index: 1000;
 }
@@ -237,13 +253,13 @@ body.theme-dark .slide-content {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    padding: 0.75rem;
+    padding: 0;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     transition: all 0.3s;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
