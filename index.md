@@ -267,6 +267,12 @@ http-server
 - Refresh the page
 - Check browser developer tools for CSS errors
 
+## Related documents
+
+- [CLAUDE.md](?CLAUDE.md)
+- [GEMINI.md](?GEMINI.md)
+- [math-demo.md](?math-demo.md)
+
 ## Credits
 
 Built with these excellent open-source libraries:
