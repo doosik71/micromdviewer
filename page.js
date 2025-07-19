@@ -87,13 +87,13 @@ function renderMarkdown() {
 
     generateTOC();
 
-    // Intercept clicks on links within the iframe to navigate the parent window
+    // Intercept clicks on links to handle internal vs external links
     document.getElementById('content').addEventListener('click', function(e) {
         if (e.target.tagName === 'A' && e.target.href) {
-            e.preventDefault();
             const clickedUrl = new URL(e.target.href);
             const currentOrigin = window.location.origin;
 
+            // Handle same-origin links
             if (clickedUrl.origin === currentOrigin) {
                 let filename = '';
                 if (clickedUrl.searchParams.has('file')) {
@@ -104,12 +104,19 @@ function renderMarkdown() {
                     filename = pathname.substring(lastSlashIndex + 1);
                 }
 
+                // If it's a markdown file, handle specially
                 if (filename.endsWith('.md')) {
-                    window.parent.location.href = `${currentOrigin}/?file=${encodeURIComponent(filename)}`;
+                    e.preventDefault();
+                    window.location.href = `${currentOrigin}/?file=${encodeURIComponent(filename)}`;
                     return;
                 }
+                // For other same-origin links, allow default behavior (same window)
+                return;
             }
-            window.open(e.target.href);
+            
+            // For external links, open in new window
+            e.preventDefault();
+            window.open(e.target.href, '_blank');
         }
     });
 }
