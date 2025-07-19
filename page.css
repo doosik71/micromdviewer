@@ -178,23 +178,28 @@ body.theme-purple {
 }
 
 .tool-btn {
-    background-color: rgba(44, 62, 80, 0.7);
-    color: white;
-    border: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+    color: #2c3e50;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 0;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 0.7rem;
-    transition: background-color 0.3s;
+    font-size: 1rem;
+    transition: all 0.3s ease;
     width: 30px;
     height: 30px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
 }
 
 .tool-btn:hover {
-    background-color: #34495e;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .content {
@@ -349,6 +354,45 @@ body.theme-dark .content tr:nth-child(even) {
         height: 40px;
         font-size: 0.9rem;
     }
+}
+
+/* Theme-specific button styles */
+body.theme-dark .tool-btn {
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.9), rgba(44, 62, 80, 0.9));
+    color: #ecf0f1;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.theme-dark .tool-btn:hover {
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    color: white;
+}
+
+body.theme-blue .tool-btn {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(30, 64, 175, 0.9));
+    color: white;
+}
+
+body.theme-blue .tool-btn:hover {
+    background: linear-gradient(135deg, #1e40af, #1d4ed8);
+}
+
+body.theme-green .tool-btn {
+    background: linear-gradient(135deg, rgba(6, 95, 70, 0.9), rgba(4, 120, 87, 0.9));
+    color: white;
+}
+
+body.theme-green .tool-btn:hover {
+    background: linear-gradient(135deg, #047857, #059669);
+}
+
+body.theme-purple .tool-btn {
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.9), rgba(107, 33, 168, 0.9));
+    color: white;
+}
+
+body.theme-purple .tool-btn:hover {
+    background: linear-gradient(135deg, #6b21a8, #7c3aed);
 }
 
 /* Print styles */

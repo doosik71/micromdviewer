@@ -133,7 +133,7 @@ function createMarkedRenderer() {
 }
 
 // Menu toggle functionality
-let menuVisible = true; // Track menu state, start with visible
+let menuVisible = false; // Track menu state, start with hidden
 
 function toggleMenu() {
     const toolbar = document.querySelector('.toolbar');
