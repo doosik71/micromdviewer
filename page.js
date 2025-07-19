@@ -109,7 +109,7 @@ function renderMarkdown() {
                     return;
                 }
             }
-            window.open(e.target.href, '_blank');
+            window.open(e.target.href);
         }
     });
 }
@@ -161,6 +161,8 @@ function performSearch() {
     const searchTerm = document.getElementById('search-input').value.trim();
     const caseSensitive = document.getElementById('case-sensitive').checked;
     const useRegex = document.getElementById('regex-search').checked;
+
+    updateClearButtonVisibility();
 
     if (!searchTerm) {
         clearSearchResults();
@@ -330,10 +332,26 @@ function clearHighlights() {
     });
 }
 
+function clearSearch() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-results').innerHTML = '';
+    clearHighlights();
+    searchResults = [];
+    updateClearButtonVisibility();
+}
+
 function clearSearchResults() {
     document.getElementById('search-results').innerHTML = '';
     clearHighlights();
     searchResults = [];
+}
+
+function updateClearButtonVisibility() {
+    const searchInput = document.getElementById('search-input');
+    const clearBtn = document.querySelector('.search-clear-btn');
+    if (clearBtn) {
+        clearBtn.style.display = searchInput.value.trim() ? 'block' : 'none';
+    }
 }
 
 function scrollToTop() {

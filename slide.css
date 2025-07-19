@@ -373,11 +373,40 @@ body.theme-dark .slide-content {
 }
 
 .search-header {
+    padding-left: 2em;
     background-color: rgba(52, 152, 219, 0.8);
 }
 
 .search-controls {
     padding: 1.5rem;
+}
+
+.search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-container input {
+    flex: 1;
+    padding-right: 30px;
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #999;
+    padding: 5px;
+    display: none;
+    line-height: 1;
+}
+
+.search-clear-btn:hover {
+    color: #fff;
 }
 
 .search-controls input {
