@@ -132,6 +132,52 @@ function createMarkedRenderer() {
     return renderer;
 }
 
+// Menu toggle functionality
+let menuVisible = true; // Track menu state, start with visible
+
+function toggleMenu() {
+    const toolbar = document.querySelector('.toolbar');
+    const slideControls = document.querySelector('.slide-controls');
+    
+    menuVisible = !menuVisible; // Toggle state
+    
+    if (toolbar) {
+        const buttons = toolbar.querySelectorAll('.tool-btn');
+        const themes = toolbar.querySelector('.themes');
+        const menuBtn = toolbar.querySelector('.menu-toggle-btn');
+        
+        buttons.forEach(btn => {
+            btn.style.display = menuVisible ? 'block' : 'none';
+        });
+        
+        if (themes) {
+            themes.style.display = menuVisible ? 'flex' : 'none';
+        }
+        
+        if (menuBtn) {
+            menuBtn.style.display = 'block'; // Always visible
+        }
+    }
+    
+    if (slideControls) {
+        const buttons = slideControls.querySelectorAll('.control-btn');
+        const themes = slideControls.querySelector('.themes');
+        const menuBtn = slideControls.querySelector('.menu-toggle-btn');
+        
+        buttons.forEach(btn => {
+            btn.style.display = menuVisible ? 'block' : 'none';
+        });
+        
+        if (themes) {
+            themes.style.display = menuVisible ? 'flex' : 'none';
+        }
+        
+        if (menuBtn) {
+            menuBtn.style.display = 'block'; // Always visible
+        }
+    }
+}
+
 // Wait for all libraries to load before initializing
 function waitForLibraries(initCallback) {
     let attempts = 0;

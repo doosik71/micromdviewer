@@ -244,7 +244,7 @@ body.theme-dark .slide-content {
     right: 20px;
     display: flex;
     flex-direction: column;
-    /* Added for vertical alignment */
+    align-items: center;
     gap: 0.5rem;
     z-index: 1000;
 }
